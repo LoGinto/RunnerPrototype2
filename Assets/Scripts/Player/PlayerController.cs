@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] float gravity;
     [SerializeField] bool isOnGround;
-    [SerializeField]bool isAirborn = false;
+    public bool isAirborn { get; set; } = false;
     [SerializeField] bool jetpack;
     [SerializeField] float speed = 2f; 
     [SerializeField] float laneDistance = 4f;
@@ -43,6 +43,13 @@ public class PlayerController : MonoBehaviour
         Debug.DrawRay(groundCheck.position, -Vector3.up * groundTo, Color.red);
         if (!jetpack)
         {
+            if((characterController.isGrounded == true && isAirborn == false) || CharacterIsGrounded())
+            { if (gameStartScript.gameStarted&&!this.animator.GetCurrentAnimatorStateInfo(0).IsName("Jumping Down"))
+                { movementVector.z = speed; } }
+            else
+            {
+                movementVector.z = 0;
+            }                
             movementVector.y = gravity;
             characterController.Move(movementVector * Time.deltaTime);            
         }                         

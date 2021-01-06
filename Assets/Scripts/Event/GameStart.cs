@@ -10,26 +10,36 @@ public class GameStart : MonoBehaviour
     [SerializeField] string jumpBeginningAnim = "JumpOff";
     [SerializeField] GameObject mainCam;
     [SerializeField] CanvasGroup gameStartCanvasGroup;
+    [SerializeField] GameObject tileManager;
     public GameObject fallcam;
+    TileManager managerOfTiles;
     public GameObject startCineCamRegulator;
     [SerializeField] GameObject firstTile;
     [SerializeField] Vector3 instantiateTileAt;//3.09,-20,-0.08
     [SerializeField] Vector3 eulerOfTile = new Vector3(-76.769f, -110.449f, 114.193f);
     Animator playerAnimator;
     AnimationPlayer animationPlayer;
+    GameObject firstTileInstance;
     // Start is called before the first frame update
     void Start()
     {
         gameStarted = false;
         doneOnce = false;
+        managerOfTiles = tileManager.GetComponent<TileManager>();
         playerAnimator = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
         animationPlayer = GetComponent<AnimationPlayer>();
-        //cinemachineRegulator.SetActive(false);
-        
-        GameObject tile = Instantiate(firstTile, instantiateTileAt, Quaternion.identity);
-        tile.transform.eulerAngles = eulerOfTile;
+        //cinemachineRegulator.SetActive(false);        
+        firstTileInstance = Instantiate(firstTile, instantiateTileAt, Quaternion.identity);
+        firstTileInstance.transform.eulerAngles = eulerOfTile;
     }
-
+    public GameObject GetFirstTile()
+    {
+        return firstTileInstance;
+    }
+    public bool GetDoneOnceBool()
+    {
+        return doneOnce;
+    }
     // Update is called once per frame
     void Update()
     {                           
@@ -50,6 +60,19 @@ public class GameStart : MonoBehaviour
             }
             if (!doneOnce)
             {
+                //managerOfTiles.transform.position = GetFirstTile().transform.Find("Spawn").transform.position;
+                //tileManager.transform.rotation = GetFirstTile().transform.Find("Spawn").transform.rotation;
+                for (int i = 0; i < managerOfTiles.numberOfTiles; i++)
+                {
+                    if (i == 0)
+                    {
+                        managerOfTiles.SpawnFirstTile(firstTileInstance.transform,0);     
+                    }
+                    else
+                    {
+                        managerOfTiles.SpawnTile(firstTileInstance.transform, Random.Range(0, managerOfTiles.prefabs.Length));     
+                    }
+                }
                 gameStartCanvasGroup.interactable = false;
                 gameStartCanvasGroup.blocksRaycasts = false;               
                 //animationPlayer.PlayTargetedAnim(playerAnimator, jumpBeginningAnim, true,true);
