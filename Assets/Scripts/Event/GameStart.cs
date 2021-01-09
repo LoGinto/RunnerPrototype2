@@ -60,28 +60,32 @@ public class GameStart : MonoBehaviour
             }
             if (!doneOnce)
             {
-                //managerOfTiles.transform.position = GetFirstTile().transform.Find("Spawn").transform.position;
-                //tileManager.transform.rotation = GetFirstTile().transform.Find("Spawn").transform.rotation;
-                for (int i = 0; i < managerOfTiles.numberOfTiles; i++)
-                {
-                    if (i == 0)
-                    {
-                        managerOfTiles.SpawnFirstTile(firstTileInstance.transform,0);     
-                    }
-                    else
-                    {
-                        managerOfTiles.SpawnTile(firstTileInstance.transform, Random.Range(0, managerOfTiles.prefabs.Length));     
-                    }
-                }
-                gameStartCanvasGroup.interactable = false;
-                gameStartCanvasGroup.blocksRaycasts = false;               
-                //animationPlayer.PlayTargetedAnim(playerAnimator, jumpBeginningAnim, true,true);
-                playerAnimator.Play(jumpBeginningAnim);
-                StartCoroutine(WaitAndOpenCam());
-                doneOnce = true;
-            }            
+                DoOnce();
+            }
         }
     }
+
+    private void DoOnce()
+    {
+        for (int i = 0; i < managerOfTiles.numberOfTiles; i++)
+        {
+            if (i == 0)
+            {
+                managerOfTiles.SpawnFirstTile(firstTileInstance.transform, 0);
+            }
+            else
+            {
+                managerOfTiles.SpawnTile(firstTileInstance.transform, Random.Range(0, managerOfTiles.prefabs.Length));
+            }
+        }
+        gameStartCanvasGroup.interactable = false;
+        gameStartCanvasGroup.blocksRaycasts = false;
+        //animationPlayer.PlayTargetedAnim(playerAnimator, jumpBeginningAnim, true,true);
+        playerAnimator.Play(jumpBeginningAnim);
+        StartCoroutine(WaitAndOpenCam());
+        doneOnce = true;
+    }
+
     IEnumerator WaitAndOpenCam()
     {
         yield return new WaitForSeconds(1f);

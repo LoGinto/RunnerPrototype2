@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] bool isOnGround;
     public bool isAirborn { get; set; } = false;
     [SerializeField] bool jetpack;
-    [SerializeField] float speed = 2f; 
+    public float speed = 2f; 
     [SerializeField] float laneDistance = 4f;
     [SerializeField] GameObject runCam;
     [SerializeField] Transform groundCheck;
@@ -17,11 +17,13 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] CharacterController characterController;
     [SerializeField] Collider myCollider;
     [SerializeField] float groundTo;
+    [SerializeField] float distanceToFixate; 
     Animator animator;
     Vector3 movementVector;
     float distToGround;
     GameStart gameStartScript;
     int lane = 1;
+    private bool isTweaking = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,7 +31,7 @@ public class PlayerController : MonoBehaviour
         characterController = GetComponent<CharacterController>();
             //characterController.detectCollisions = false;
         distToGround = myCollider.bounds.extents.y;
-        animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();       
         gameStartScript = FindObjectOfType<GameStart>();    
     }
 
@@ -41,62 +43,92 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         Debug.DrawRay(groundCheck.position, -Vector3.up * groundTo, Color.red);
-        if (!jetpack)
+        FixedMovement();
+        if (isAirborn)
         {
-            if((characterController.isGrounded == true && isAirborn == false) || CharacterIsGrounded())
-            { if (gameStartScript.gameStarted&&!this.animator.GetCurrentAnimatorStateInfo(0).IsName("Jumping Down"))
-                { movementVector.z = speed; } }
-            else
+            GameObject firstTile = gameStartScript.GetFirstTile();
+            if (Vector3.Distance(transform.position,firstTile.transform.position) <= distanceToFixate)
             {
-                movementVector.z = 0;
-            }                
-            movementVector.y = gravity;
-            characterController.Move(movementVector * Time.deltaTime);            
-        }                         
+                transform.position = new Vector3((Mathf.Lerp(transform.position.x,firstTile.transform.position.x,interPolation *Time.fixedDeltaTime)),
+                    transform.position.y,transform.position.z);     
+            }            
+        }
     }
+
+    private void FixedMovement()
+    {
+        if (!jetpack)
+        {                       
+            movementVector.y = gravity;
+            characterController.Move(movementVector * Time.deltaTime);
+        }
+        
+    }
+
     private void Update()
     {
-        dir.z = speed;
+        dir.z = speed;        
         Debug.Log("Grounded method " + CharacterIsGrounded());
         Debug.Log("CC is grounded " + characterController.isGrounded);        
         
         if (!jetpack && gameStartScript.gameStarted)
-        {           
-            if (characterController.isGrounded == false)
-            {               
-                if (!this.animator.GetCurrentAnimatorStateInfo(0).IsName("Jumping Down")&& !CharacterIsGrounded())
+        {
+            ConfigureRunning();
+        }        
+            MoveBetweenLanes();        
+    }
+
+    private void ConfigureRunning()
+    {
+        if (this.animator.GetCurrentAnimatorStateInfo(0).IsName("Run"))
+        {
+            gameStartScript.fallcam.SetActive(false);
+        }
+        if (characterController.isGrounded == false)
+        {
+            if (!this.animator.GetCurrentAnimatorStateInfo(0).IsName("Jumping Down") && !CharacterIsGrounded())
+            {
+                isAirborn = true;
+            }
+            else if (!this.animator.GetCurrentAnimatorStateInfo(0).IsName("Jumping Down") && CharacterIsGrounded())
+            {
+                isAirborn = false;
+            }
+            if (isAirborn)
+            {
+                if (this.animator.GetCurrentAnimatorStateInfo(0).IsName("Run"))
                 {
-                    isAirborn = true;
+                    gameStartScript.fallcam.SetActive(false);
+                    runCam.SetActive(false);
                 }
-                else if (!this.animator.GetCurrentAnimatorStateInfo(0).IsName("Jumping Down") && CharacterIsGrounded())
-                {
-                    isAirborn = false; 
-                }
-                if (isAirborn)
+                else
                 {
                     gameStartScript.fallcam.SetActive(true);
                     runCam.SetActive(false);
-                }             
-            }
-            else if (characterController.isGrounded == true)
-            {             
-                if (isAirborn == true)
-                {                    
-                    animator.applyRootMotion = false;
-                    animator.Play("Landed");                    
-                    characterController.center = new Vector3(0, 1.7f, 0);
-                    isAirborn = false;
-                }
-                
-                if (!isAirborn && !this.animator.GetCurrentAnimatorStateInfo(0).IsName("Jumping Down"))
-                {
-                    gameStartScript.fallcam.SetActive(false);
-                    runCam.SetActive(true);
                 }
             }
         }
-        MoveBetweenLanes();
+        else if (characterController.isGrounded == true)
+        {
+            if (isAirborn == true)
+            {
+                animator.applyRootMotion = false;
+                if (!this.animator.GetCurrentAnimatorStateInfo(0).IsName("Run"))
+                {
+                    animator.Play("Landed");
+                }
+                characterController.center = new Vector3(0, 1.7f, 0);
+                isAirborn = false;
+            }
+
+            if (!isAirborn && !this.animator.GetCurrentAnimatorStateInfo(0).IsName("Jumping Down"))
+            {
+                gameStartScript.fallcam.SetActive(false);
+                runCam.SetActive(true);
+            }            
+        }
     }
+
     void MoveBetweenLanes()
     {       
         if (gameStartScript.gameStarted)
@@ -140,6 +172,8 @@ public class PlayerController : MonoBehaviour
             {
                 characterController.Move(diff);
             }
+
+
         }
     }   
 }

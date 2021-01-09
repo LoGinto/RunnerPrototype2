@@ -8,49 +8,62 @@ public class TileManager : MonoBehaviour
     public float zSpawn = 0f;
     public float tileLength = 30f;
     public int numberOfTiles = 3;
-    public float xmultiplier = 3.1f;
+    public float xmultiplier = -3.1f;
+    public float xadditive = 3.1f;
     Transform player;
-    [HideInInspector]GameStart gameStartScript;
-    //[HideInInspector] PlayerController playerController;    
+    [HideInInspector] GameStart gameStartScript;
+    [HideInInspector] PlayerController playerController;    
     private List<GameObject> activeTiles = new List<GameObject>();
     // Start is called before the first frame update
     private void Awake()
     {
-        gameStartScript = FindObjectOfType<GameStart>();        
+        gameStartScript = FindObjectOfType<GameStart>();
     }
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;                
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        playerController = player.GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
     void Update()
-    {       
-        if (player.transform.position.z - 35 > zSpawn - (numberOfTiles*tileLength))
-        {          
-            SpawnTile(gameStartScript.GetFirstTile().transform,Random.Range(0, prefabs.Length));
+    {
+        //change logic here
+        if (player.transform.position.z - 35 > zSpawn - (numberOfTiles * tileLength))
+        {
+            SpawnTile(gameStartScript.GetFirstTile().transform, Random.Range(0, prefabs.Length));
             DeleteTile();
         }
     }
-        
-    public void SpawnTile(Transform firstTile,int tileIndex)
+    private void LateUpdate()
     {
-        GameObject tileGameObject = Instantiate(prefabs[tileIndex]);  
-        tileGameObject.transform.position= firstTile.position;
+        if (gameStartScript.gameStarted && playerController.isAirborn == false)
+        {
+            foreach (var tile in activeTiles)
+            {
+                tile.transform.Translate(tile.transform.forward * playerController.speed * Time.deltaTime);
+            }
+        }
+    }
+    public void SpawnTile(Transform firstTile, int tileIndex)
+    {
+        //change logic here
+        GameObject tileGameObject = Instantiate(prefabs[tileIndex]);
+        tileGameObject.transform.position = firstTile.position;
         tileGameObject.transform.rotation = firstTile.rotation;
-        tileGameObject.transform.position = new Vector3(tileGameObject.transform.position.x + xmultiplier, tileGameObject.transform.position.y,firstTile.position.z + zSpawn);   
+        tileGameObject.transform.position = new Vector3(tileGameObject.transform.position.x + xmultiplier, tileGameObject.transform.position.y, firstTile.position.z + zSpawn);
         activeTiles.Add(tileGameObject);
         zSpawn += tileLength;
-        xmultiplier += 3;
+        xmultiplier += xadditive;
     }
-    public void SpawnFirstTile(Transform firstTile,int tileIndex)
+    public void SpawnFirstTile(Transform firstTile, int tileIndex)
     {
         GameObject tileGameObject = Instantiate(prefabs[tileIndex]);
         tileGameObject.transform.position = firstTile.position;
         tileGameObject.transform.rotation = firstTile.rotation;
         tileGameObject.transform.position = new Vector3(firstTile.transform.position.x + xmultiplier, tileGameObject.transform.position.y, firstTile.position.z + tileLength);
         activeTiles.Add(tileGameObject);
-        xmultiplier += 3;
+        xmultiplier += xadditive;
     }
     void DeleteTile()
     {
