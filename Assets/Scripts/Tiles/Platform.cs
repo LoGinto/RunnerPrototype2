@@ -5,7 +5,7 @@ using UnityEngine;
 public class Platform : MonoBehaviour
 {
     public Transform startPoint;
-    public float waitFor = 0.5f;
+    public float waitFor = 0.9f;
     public Transform endPoint;
     public GameObject[] obstacles; //Objects that contains different obstacle types which will be randomly activated
 
@@ -29,13 +29,25 @@ public class Platform : MonoBehaviour
     {
         if(other.tag == "Player")
         {
-            // StartCoroutine(WaitAndChange());  
-            FindObjectOfType<TileManager>().shouldChange = true;
+            // StartCoroutine(WaitAndChange());
+            //if (FindObjectOfType<RoadStart>().shouldMove)
+            //{
+            //    StartCoroutine(FindObjectOfType<RoadStart>().WaitAndDisable());
+            //}            
+            FindObjectOfType<TileManager>().shouldChange = true;            
+            StartCoroutine(WaitAndChange());
         }
     }
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.tag == "Player")
+    //    {
+    //        FindObjectOfType<TileManager>().shouldChange = false;
+    //    }
+    //}
     IEnumerator WaitAndChange()
     {
         yield return new WaitForSeconds(waitFor);
-        
+        FindObjectOfType<TileManager>().DeleteTile();
     }
 }

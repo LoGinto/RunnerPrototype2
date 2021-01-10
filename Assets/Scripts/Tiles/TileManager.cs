@@ -21,25 +21,28 @@ public class TileManager : MonoBehaviour
     private void Update()
     {
         if (shouldChange)
-        {
+        {            
             SpawnTile();
-            SpawnTile();            
             shouldChange = false;
+            //SpawnTile();           
         }
-        if (gameStartScript.gameStarted)
-        {
-            if (mainCamera.WorldToViewportPoint(activeTiles[0].GetComponent<Platform>().endPoint.position).z < 0)
-            {
-                DeleteTile();
-            }
-        }
+        //if (gameStartScript.gameStarted)
+        //{
+        //    if (mainCamera.WorldToViewportPoint(activeTiles[0].GetComponent<Platform>().endPoint.position).z < 0)
+        //    {
+        //        DeleteTile();
+        //    }
+        //}
     }
 
     private void LateUpdate()
     {
         if(gameStartScript.gameStarted && playerController.isAirborn == false)
         {
-            gameStartScript.GetFirstTile().transform.Translate(gameStartScript.GetFirstTile().transform.forward * playerController.speed * Time.deltaTime);
+            //if (gameStartScript.GetFirstTile().GetComponent<RoadStart>().shouldMove == true)
+            //{
+                gameStartScript.GetFirstTile().transform.Translate(gameStartScript.GetFirstTile().transform.forward * playerController.speed * Time.deltaTime);
+            //}
             foreach (var tile in activeTiles)
             {
                 tile.transform.Translate(tile.transform.forward * playerController.speed * Time.deltaTime);
@@ -48,12 +51,28 @@ public class TileManager : MonoBehaviour
     }
     void SpawnTile()
     {
-        GameObject tile = Instantiate(prefabs[Random.Range(0, activeTiles.Count-1)]);
-        tile.transform.rotation = gameStartScript.GetFirstTile().transform.rotation;
-        tile.transform.position = new Vector3(activeTiles[activeTiles.Count-1].transform.position.x+xAdditive,gameStartScript.GetFirstTile().transform.position.y, activeTiles[activeTiles.Count-1].transform.position.z + tileLength);
-        
+        GameObject tile; 
+       // tile.transform.rotation = gameStartScript.GetFirstTile().transform.rotation;
+        //try
+        //{
+            tile = Instantiate(prefabs[Random.Range(0, prefabs.Count)], new Vector3(activeTiles[activeTiles.Count - 1].transform.position.x + xAdditive, gameStartScript.GetFirstTile().transform.position.y, activeTiles[activeTiles.Count - 1].transform.position.z + tileLength), gameStartScript.GetFirstTile().transform.rotation);           
+       //}
+        //catch
+        //{
+        //    Debug.Log("Catch executed");
+        //    try
+        //    {
+        //        Debug.Log("Try Catch executed");
+        //        tile.transform.position = new Vector3(activeTiles[activeTiles.Count].transform.position.x + xAdditive, gameStartScript.GetFirstTile().transform.position.y, activeTiles[activeTiles.Count].transform.position.z + tileLength);
+        //    }
+        //    catch
+        //    {
+        //        Debug.Log("Catch#2 executed");
+        //        tile.transform.position = new Vector3(activeTiles[0].transform.position.x + xAdditive, gameStartScript.GetFirstTile().transform.position.y, activeTiles[0].transform.position.z + tileLength);
+        //    }
+        //}
         activeTiles.Add(tile);
-    }
+    } 
     public void SpawnFirstTile()
     {
         GameObject tile = Instantiate(prefabs[Random.Range(0, activeTiles.Count)]);
@@ -61,11 +80,10 @@ public class TileManager : MonoBehaviour
         tile.transform.position = new Vector3(gameStartScript.GetFirstTile().transform.position.x + xAdditive, gameStartScript.GetFirstTile().transform.position.y, gameStartScript.GetFirstTile().transform.position.z+ tileLength);
         activeTiles.Add(tile);
     }
-    void DeleteTile()
+    public void DeleteTile()
     {
         Destroy(activeTiles[0]);
         activeTiles.RemoveAt(0);
-
     }
 
 }

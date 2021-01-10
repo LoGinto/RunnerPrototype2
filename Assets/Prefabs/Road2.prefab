@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startPoint: {fileID: 231629241776051385}
-  waitFor: 0.1
+  waitFor: 1.5
   endPoint: {fileID: 8273108997927390507}
   obstacles: []
 --- !u!65 &4044748676392779773
@@ -158,8 +158,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.02, y: 0, z: 0.18761162}
-  m_Center: {x: 0, y: -0.004, z: 0.08380586}
+  m_Size: {x: 0.027687933, y: 0, z: 0.33185872}
+  m_Center: {x: 0.0016381561, y: -0.0048039192, z: 0.15592957}
 --- !u!1 &5634816463436910950
 GameObject:
   m_ObjectHideFlags: 0

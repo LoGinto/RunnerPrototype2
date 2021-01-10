@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2015415105843833096}
   - component: {fileID: 4331554738221342146}
   - component: {fileID: 2443653892391723774}
+  - component: {fileID: 3090018694073416632}
   m_Layer: 0
   m_Name: RoadStart
   m_TagString: Untagged
@@ -94,9 +95,22 @@ BoxCollider:
   m_GameObject: {fileID: 2818191674683456535}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 0.02, y: 0.00000862948, z: 0.18101192}
+  m_Center: {x: -4.423316e-11, y: -0.009005716, z: 0.08050592}
+--- !u!65 &3090018694073416632
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2818191674683456535}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.02, y: 0.019999996, z: 0.019999996}
+  m_Size: {x: 0.020000001, y: 0.019999998, z: 0.02}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7273247969031234671
 GameObject:
