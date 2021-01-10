@@ -700,7 +700,7 @@ MonoBehaviour:
   fallcam: {fileID: 2027355590}
   startCineCamRegulator: {fileID: 1761919943}
   firstTile: {fileID: 2818191674683456535, guid: 3e46d0df555585d49a593c7e684b6e06, type: 3}
-  instantiateTileAt: {x: 0, y: -60, z: 0}
+  instantiateTileAt: {x: 0, y: -10, z: 0}
   eulerOfTile: {x: -90, y: 100, z: -94}
 --- !u!4 &1171249436
 Transform:
@@ -1000,13 +1000,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00aa4218c9c84c04db87a9eb603c9934, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeTiles: []
   prefabs:
-  - {fileID: 3234278354761429219, guid: 8352e454a2fdd9348af25a1f0358268f, type: 3}
-  zSpawn: 0
-  tileLength: 29.8
-  numberOfTiles: 3
-  xmultiplier: -3
-  xadditive: 3.1
+  - {fileID: 3234278354761429219, guid: 32a22d0822c01c04c8f5acc13b8082df, type: 3}
+  mainCamera: {fileID: 963194227}
+  tileLength: 30
+  xAdditive: 2.98
+  shouldChange: 0
 --- !u!4 &1740527337
 Transform:
   m_ObjectHideFlags: 0

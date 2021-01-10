@@ -67,17 +67,7 @@ public class GameStart : MonoBehaviour
 
     private void DoOnce()
     {
-        for (int i = 0; i < managerOfTiles.numberOfTiles; i++)
-        {
-            if (i == 0)
-            {
-                managerOfTiles.SpawnFirstTile(firstTileInstance.transform, 0);
-            }
-            else
-            {
-                managerOfTiles.SpawnTile(firstTileInstance.transform, Random.Range(0, managerOfTiles.prefabs.Length));
-            }
-        }
+        managerOfTiles.SpawnFirstTile();
         gameStartCanvasGroup.interactable = false;
         gameStartCanvasGroup.blocksRaycasts = false;
         //animationPlayer.PlayTargetedAnim(playerAnimator, jumpBeginningAnim, true,true);
