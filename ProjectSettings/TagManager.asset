@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PlayerMesh
   - Ground
+  - Plane
   layers:
   - Default
   - TransparentFX

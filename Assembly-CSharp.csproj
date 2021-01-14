@@ -53,15 +53,18 @@
     <UnityVersion>2020.2.0f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Tiles\ObjectPool\MoveComponent.cs" />
+    <Compile Include="Assets\Scripts\Tiles\ObjectPool\ObjectPooler.cs" />
     <Compile Include="Assets\Scripts\Tiles\Platform.cs" />
     <Compile Include="Assets\Scripts\Player\AnimationPlayer.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Tiles\TileManager.cs" />
     <Compile Include="Assets\Scripts\Tiles\RoadStart.cs" />
-    <Compile Include="Assets\Scripts\Event\GameStart.cs" />
-    <Compile Include="Assets\Scripts\Tiles\ObjectPool\ObjectPooler.cs" />
     <Compile Include="Assets\Scripts\Tiles\ObjectPool\ObjectSpawner.cs" />
-    <Compile Include="Assets\Scripts\Tiles\ObjectPool\MoveComponent.cs" />
+    <Compile Include="Assets\Scripts\Event\GameStart.cs" />
+    <Compile Include="Assets\Scripts\Event\CoinPickup.cs" />
+    <Compile Include="Assets\Scripts\Event\GameLogic.cs" />
+    <Compile Include="Assets\Scripts\Tiles\ObjectPool\UpwardMovingComponent.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
@@ -688,6 +691,15 @@
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Recorder.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Recorder.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Recorder">
+      <HintPath>Library\ScriptAssemblies\Unity.Recorder.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Recorder.Base">
+      <HintPath>Library\ScriptAssemblies\Unity.Recorder.Base.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

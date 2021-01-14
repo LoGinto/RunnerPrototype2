@@ -4,23 +4,36 @@ using UnityEngine;
 
 public class MoveComponent : MonoBehaviour
 {
-    [SerializeField] float speed = 5f;
-    [SerializeField] float objectDistance = -40f;
-    [SerializeField] float despawnDistance = -110f;
-    bool canSpawnGround = true;
+    [SerializeField] public float speed = 5f;
+    [SerializeField] public float objectDistance = -40f;
+    [SerializeField] public float despawnDistance = -110f;   
+    protected bool canSpawnGround = true;
 
-    private void Update()
+    protected virtual void Update()
     {
-        transform.position += -transform.forward * speed * Time.deltaTime;
-        if(transform.position.z <= objectDistance && transform.tag == "Ground"&&canSpawnGround)
-        {
-            ObjectSpawner.instance.SpawnGround();
-            canSpawnGround = false;
+        
+            transform.position += -transform.forward * speed * Time.deltaTime;
+            if (transform.position.z <= objectDistance && transform.tag == "Ground" && canSpawnGround)
+            {
+                ObjectSpawner.instance.SpawnGround();
+                canSpawnGround = false;
+            }
+            if (transform.position.z <= despawnDistance)
+            {
+                canSpawnGround = true;
+                gameObject.SetActive(false);
+            }
         }
-        if (transform.position.z <= despawnDistance)
-        {
-            canSpawnGround = true;
-            gameObject.SetActive(false);
-        }
-    }
+       
+            //transform.position += -transform.up * speed * Time.deltaTime;
+            //if (transform.position.y <= objectDistance && transform.tag == "Ground" && canSpawnGround)
+            //{
+            //    ObjectSpawner.instance.SpawnGround();
+            //    canSpawnGround = false;
+            //}
+            //if (transform.position.y <= despawnDistance)
+            //{
+            //    canSpawnGround = true;
+            //    gameObject.SetActive(false);
+            //}           
 }
